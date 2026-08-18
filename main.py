@@ -42,11 +42,9 @@ if VPN_PROXY_URL:
 # -------------------------
 def load_keys_from_file(path: str) -> List[str]:
     if not os.path.exists(path):
-        raise FileNotFoundError(f"API keys file not found: {path}")
+        return []
     with open(path, "r", encoding="utf-8") as f:
-        keys = [line.strip() for line in f if line.strip()]
-    if not keys:
-        raise RuntimeError("No API keys found in file.")
+        keys = [line.strip() for line in f if line.strip() and not line.strip().startswith("#")]
     return keys
 
 KEYS_LIST = load_keys_from_file(KEYS_FILE)
